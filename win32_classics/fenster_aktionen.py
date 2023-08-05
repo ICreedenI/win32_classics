@@ -28,7 +28,7 @@ from win32gui import (
     FindWindow,
 )
 from colorful_terminal import *
-from exception_details import print_exception_details
+from exception_details import *
 
 
 def get_monitor_infos():
@@ -61,8 +61,10 @@ def set_window_position(
 
     try:
         SetWindowPos(hWnd, insert_after, x, y, w, h, flag)
+        return 0
     except Exception as exc:
         title = GetWindowText(hWnd)
+        return get_exception_details_str(exc)
         # colored_print(Fore.RED + f"Fehler für '{title}':")
         # print_exception_details(exc)
 
@@ -252,12 +254,7 @@ def get_WindowHandle_plus_from_Title(
             else:
                 if title.lower() == dic["name"].lower():
                     result.append(dic)
-    if len(result) == 1:
-        return result[0]
-    elif len(result) == 0:
-        return None
-    else:
-        return result
+    return result
 
 
 def get_WindowHandle_from_ExePath(
@@ -269,7 +266,7 @@ def get_WindowHandle_from_ExePath(
     result = get_WindowHandle_plus_from_ExePath(
         path, contains, pre_filter_invisible_windows, acknowledge_case
     )
-    if result == None:
+    if result == None or result == []:
         return None
     try:
         return result[0]["hwnd"]
