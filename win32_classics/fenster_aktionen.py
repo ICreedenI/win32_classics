@@ -302,7 +302,7 @@ def get_WindowHandle_from_Title(
     result = get_WindowHandle_plus_from_Title(
         title, contains, pre_filter_invisible_windows, acknowledge_case
     )
-    if result == None:
+    if result == []:
         return None
     try:
         return result[0]["hwnd"]
