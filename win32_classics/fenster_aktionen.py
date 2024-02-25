@@ -418,12 +418,34 @@ def set_window_nottopmost_in_windows(WindowHandle=None, x=None, y=None, w=None, 
 
     SetWindowPos(hWnd, insert_after, x, y, w, h, flag)
 
+def press_key(key):
+    """
+    Simulates pressing a key.
+    
+    Parameters:
+        key (int): Virtual key code of the key to be pressed.
+    """
+    win32api.keybd_event(key, 0, 0, 0)
+
+def release_key(key):
+    """
+    Simulates releasing a key.
+    
+    Parameters:
+        key (int): Virtual key code of the key to be released.
+    """
+    win32api.keybd_event(key, 0, win32con.KEYEVENTF_KEYUP, 0)
+
 
 def set_foreground_window(WindowHandle):
-    win32com.client.Dispatch("WScript.Shell").SendKeys(
-        "%"
-    )  # sends left alt key to make windows accept switch of window focus
-    SetForegroundWindow(WindowHandle)
+    ### not working anymore???
+    # win32com.client.Dispatch("WScript.Shell").SendKeys(
+    #     "%"
+    # )  # sends left alt key to make windows accept switch of window focus
+    
+    press_key(win32con.VK_MENU)  # Press the Alt key
+    try: SetForegroundWindow(WindowHandle)
+    finally: release_key(win32con.VK_MENU)  # Release the Alt key
 
 
 def get_exe_path_from_window_handle(hwnd):
