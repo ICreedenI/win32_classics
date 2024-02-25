@@ -37,4 +37,4 @@ from .fenster_aktionen import (
     show_window_normally,
 )
 
-__version__ = "0.0.6"
+__version__ = "0.0.7"
